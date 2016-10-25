@@ -2,7 +2,7 @@
 
 exports.type = 'full';
 
-exports.active = true;
+exports.active = false;
 
 exports.description = 'removes width and height in presence of viewBox';
 
@@ -16,15 +16,17 @@ exports.fn = function(data) {
     var svg = data.content[0];
 
     if (svg.isElem('svg')) {
-        svg.addAttr({
-            name: 'viewBox',
-            value: '0 0 ' + svg.attr('width').value + ' ' + svg.attr('height').value,
-            prefix: '',
-            local: 'class'
-        });
+        if (svg.hasAttr('width') && svg.hasAttr('height')) {
+          svg.addAttr({
+              name: 'viewBox',
+              value: '0 0 ' + svg.attr('width').value + ' ' + svg.attr('height').value,
+              prefix: '',
+              local: 'class'
+          });
 
-        svg.removeAttr('width');
-        svg.removeAttr('height');
+          svg.removeAttr('width');
+          svg.removeAttr('height');
+        }
     }
 
     return data;
